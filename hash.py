@@ -12,7 +12,8 @@ def omega():
         print "\n\033[1;32m[+] Hash cracked by Omega:\033[1;m", match.group().split('<b>')[1][:-14]
         sys.exit()
     else:
-        Lambda()
+        print "\033[1;31m[-]\033[1;m Sorry this hash is not present in our database."
+        sys.exit()
 
 def Lambda():
     data = urlencode({"hash":hashvalue})
