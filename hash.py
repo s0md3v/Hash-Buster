@@ -78,4 +78,4 @@ if len(hashvalue) == 64:
     print "\033[1;33m[!]\033[1;m Hash function : SHA-256"
     Lambda()
 else:
-    "\033[1;31m[-]\033[1;m This hash is not supported."
+    print "\033[1;31m[-]\033[1;m This hash is not supported."
