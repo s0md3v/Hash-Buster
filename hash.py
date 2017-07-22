@@ -16,7 +16,7 @@ def banner():
 	print "\t\033[97m     Made with \033[1;m\033[1;31m<3\033[1;31m\033[97m By Team Ultimate\033[1;m"
 	print """\033[1;97m_  _ ____ ____ _  _    ___  _  _ ____ ___ ____ ____ 
 |__| |__| [__  |__|    |__] |  | [__   |  |___ |__/ 
-|  | |  | ___] |  |    |__] |__| ___]  |  |___ |  \  v1.0\033[1;m"""
+|  | |  | ___] |  |    |__] |__| ___]  |  |___ |  \  v%s\033[1;m"""%(__version__)
 	print "\033[1;32mServers Loaded: Alpha, Beta, Gamma, Delta, Omega, Lambda\033[1;m"
 	print((56 * '\033[31m-\033[1;m'))
 
@@ -115,7 +115,7 @@ def main(hash):
 			if result != False:
 				pass
 
-		elif hashType == "sha256":
+		elif hashType == "sha-256":
 			site = "Lambda" #
 
 			result = eval(site)(hash)
@@ -132,6 +132,8 @@ def main(hash):
 
 		if result != False:
 			print "\n\033[1;32m[+] Hash cracked by %s:\033[1;m"%(site), result
+		else:
+			print "\033[1;31m[-]\033[1;m Sorry this hash is not present in our database."
 
 	else:
 		print "\033[1;31m[-]\033[1;m This hash is not supported."
