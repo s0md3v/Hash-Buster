@@ -11,15 +11,7 @@ Features of Hash Buster:
 - [x] Adding more APIs for SHA1 and SHA2
 - [ ] More hash types will be added on demand$
 
-# Installation
-
-### Automatic Installation
-```
-$ wget https://raw.githubusercontent.com/UltimateHackers/Hash-Buster/master/installer.py
-# sudo python2 installer.py
-```
-
-### Manual Installation
+## Installation
 ```
 $ git clone https://github.com/UltimateHackers/Hash-Buster && cd Hash-Buster
 $ python2 hash.py
