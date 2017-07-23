@@ -5,8 +5,7 @@
 
 import sys
 from urllib import *
-
-from re import search, findall
+from re import search
 
 __author__  = "UltimateHackers"
 __version__ = "0.0.3"
