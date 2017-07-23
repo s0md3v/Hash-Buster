@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-from urllib import *
-from re import search, findall
+from urllib import urlopen, urlencode
+from re import search
 import sys
-
 def omega():
     data = urlencode({"hash":hashvalue, "decrypt":"Decrypt"})
     html = urlopen("http://md5decrypt.net/en/Sha256/", data)
@@ -16,13 +15,10 @@ def omega():
         sys.exit()
 
 def Lambda():
-    data = urlencode({"hash":hashvalue})
-    html = urlopen("http://performancetesting.in/sha256decryption.php", data)
+    html = urlopen("http://md5decrypt.net/Api/api.php?hash="+hashvalue+"&hash_type=sha256&email=deanna_abshire@proxymail.eu&code=1152464b80a61728")
     find = html.read()
-    print find
-    match = search (r'Decrypted Text : </b>[^<]*</div>', find)
-    if match:
-        print "\n\033[1;32m[+] Hash cracked by Lambda:\033[1;m", match.group().split('</b>')[1][:-6]
+    if len(find) > 0:
+        print "\n\033[1;32m[+] Hash cracked by Lambda:\033[1;m", find
         sys.exit()
     else:
         print "\033[1;31m[-]\033[1;m Sorry this hash is not present in our database."
