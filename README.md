@@ -27,7 +27,3 @@ python hash.py
 Now you can enter any non-salter MD5/SHA1/SHA2 hash to *crack* it.
 
 <img src='https://i.imgur.com/RCVvwX6.png' />
-
-### License
-If you want to use code from Hash Buster, let me know.
-Copying/Modifying its code without my permission is a violation of the license.
