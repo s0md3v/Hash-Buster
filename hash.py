@@ -92,3 +92,4 @@ def main():
         Lambda()
     
     print "\033[1;31m[-]\033[1;m This hash is not supported."
+main()
