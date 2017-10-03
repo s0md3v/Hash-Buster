@@ -14,7 +14,7 @@ Features of Hash Buster:
 ## Installing and Using Hash Buster
 Open your terminal and enter
 ```
-https://github.com/UltimateHackers/Hash-Buster
+git clone https://github.com/UltimateHackers/Hash-Buster
 ```
 Now enter the following command
 ```
