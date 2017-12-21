@@ -25,7 +25,8 @@ def omega():
     if match:
         print "\n%s %s : " % (good, hashvalue), match.group().split('<b>')[1][:-14]
     else:
-        print "%s Sorry this hash is not present in our database." % bad
+        if not args.path:
+            print "%s Sorry this hash is not present in our database." % bad
 
 def Lambda():
     html = urlopen("http://md5decrypt.net/Api/api.php?hash=%s&hash_type=sha256&email=deanna_abshire@proxymail.eu&code=1152464b80a61728" % hashvalue)
@@ -33,7 +34,8 @@ def Lambda():
     if len(find) > 0:
         print "\n%s %s : " % (good, hashvalue), find
     else:
-        print "%s Sorry this hash is not present in our database." % bad
+        if not args.path:
+            print "%s Sorry this hash is not present in our database." % bad
 def beta():
     data = urlencode({"auth":"8272hgt", "hash":hashvalue, "string":"","Submit":"Submit"})
     html = urlopen("http://hashcrack.com/index.php" , data)
@@ -52,7 +54,8 @@ print ((56 * '\033[1;31m-'))
 
 def crack(hashvalue):
     if len(hashvalue) == 32:
-        print "%s Hash function : MD5" % info
+        if not args.path:
+            print "%s Hash function : MD5" % info
         data = urlencode({"hash":hashvalue,"submit":"Decrypt It!"})
         html = urlopen("http://md5decryption.com", data)
         find = html.read()
@@ -72,12 +75,15 @@ def crack(hashvalue):
                 if len(purl) > 0:
                     print "\n%s %s :" % (good, hashvalue), purl
                 else:
-                    print "%s Sorry this hash is not present in our database." % bad
+                    if not args.path:
+                        print "%s Sorry this hash is not present in our database." % bad
     elif len(hashvalue) == 40:
-        print "%s Hash function : SHA1" % info
+        if not args.path:
+            print "%s Hash function : SHA1" % info
         beta()
     elif len(hashvalue) == 64:
-        print "%s Hash function : SHA-256" % info
+        if not args.path:
+            print "%s Hash function : SHA-256" % info
         Lambda()
     else:
         print "%s This hash is not supported." % bad
