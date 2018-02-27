@@ -53,6 +53,13 @@ print """\033[1;97m_  _ ____ ____ _  _    ___  _  _ ____ ___ ____ ____
 print ((56 * '\033[1;31m-'))
 
 def crack(hashvalue):
+    url = 'https://lea.kz/api/hash/' + hashvalue
+    html = urlopen(url)
+    find = html.read()
+    match = search(r"\"password\": \"[^<]*\"", find)
+    if match:
+        print "\n%s %s : " % (good, hashvalue), match.group().split(' ')[1].replace("\"", '')
+        return
     if len(hashvalue) == 32:
         if not args.path:
             print "%s Hash function : MD5" % info
