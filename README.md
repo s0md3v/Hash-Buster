@@ -30,6 +30,7 @@ Yep, just specify a directory and Hash Buster will go through all the files and 
 `buster -f /root/hashes.txt`
 #### Finding hashes from a directory
 `buster -d /root/Documents`
+
 **Note:** Please don't add `/` at the end of the directory
 
 ### License
