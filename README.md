@@ -23,7 +23,9 @@ surrondedbytext8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918s
 #### Finding hashes from a directory
 Yep, just specify a directory and Hash Buster will go through all the files and directories present in it, looking for hashes.
 
-## Usage
+## Insallation & Usage
+You can install Hash-Buster with the following command:
+`make install`
 #### Cracking a single hash
 `buster -s <hash>`
 #### Cracking hashes from a file
