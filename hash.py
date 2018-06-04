@@ -113,7 +113,7 @@ def crack(hashvalue):
         quit()
 
 if args.dir:
-    os.system('grep -Pr "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" %s --exclude=\*.{png,jpg,jpeg,mp3,mp4,zip,gz} | grep -Po "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" >> %s.txt' % (args.dir, args.dir.split('/')[-1]))
+    os.system('grep -Pr "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" %s --exclude=\*.{png,jpg,jpeg,mp3,mp4,zip,gz} | grep -Po "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" >> /root/Hash-Buster/%s.txt' % (args.dir, args.dir.split('/')[-1]))
 
 elif args.path:
     lines = []
@@ -132,7 +132,7 @@ elif args.path:
         resp = crack(hashvalue)
         if resp:
             result[hashvalue] = resp
-    with open('cracked-%s' % args.path.split('/')[-1], 'w+') as f:
+    with open('/root/Hash-Buster/cracked-%s' % args.path.split('/')[-1], 'w+') as f:
         for hashvalue, cracked in result.items():
             f.write(hashvalue + ':' + cracked + '\n')
 elif args.hash:
