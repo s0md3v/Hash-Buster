@@ -110,6 +110,7 @@ def crack(hashvalue):
             return False
     else:
         print ('%s This hash is not supported.' % bad)
+        quit()
 
 if args.dir:
     os.system('grep -Pr "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" %s --exclude=\*.{png,jpg,jpeg,mp3,mp4,zip,gz} | grep -Po "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" >> %s.txt' % (args.dir, args.dir.split('/')[-1]))
