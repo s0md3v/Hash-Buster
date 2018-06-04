@@ -25,6 +25,7 @@ Yep, just specify a directory and Hash Buster will go through all the files and 
 
 ## Insallation & Usage
 You can install Hash-Buster with the following command:
+
 `make install`
 #### Cracking a single hash
 `buster -s <hash>`
