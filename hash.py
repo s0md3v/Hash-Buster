@@ -127,6 +127,7 @@ result = {}
 def threaded(hashvalue):
     resp = crack(hashvalue)
     if resp:
+        print (hashvalue + ' : ' + resp)
         result[hashvalue] = resp
 
 def grepper(directory):
