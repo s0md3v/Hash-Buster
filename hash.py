@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import re
 import os
 import requests
@@ -83,30 +84,40 @@ def crack(hashvalue):
         if not file:
             print ('%s Hash function : MD5' % info)
         for api in md5:
-            return api(hashvalue, 'md5')
+            r = api(hashvalue, 'md5')
+            if r:
+                return r
     elif len(hashvalue) == 40:
         if not file:
             print ('%s Hash function : SHA1' % info)
         for api in sha1:
-            return api(hashvalue, 'sha1')
+            r = api(hashvalue, 'sha1')
+            if r:
+                return r
     elif len(hashvalue) == 64:
         if not file:
             print ('%s Hash function : SHA-256' % info)
         for api in sha256:
-            return api(hashvalue, 'sha256')
+            r = api(hashvalue, 'sha256')
+            if r:
+                return r
     elif len(hashvalue) == 96:
         if not file:
             print ('%s Hash function : SHA-384' % info)
         for api in sha384:
-            return api(hashvalue, 'sha384')
+            r = api(hashvalue, 'sha384')
+            if r:
+                return r
     elif len(hashvalue) == 128:
         if not file:
             print ('%s Hash function : SHA-512' % info)
         for api in sha512:
-            return api(hashvalue, 'sha512')
+            r = api(hashvalue, 'sha512')
+            if r:
+                return r
     else:
         if not file:
-            print ('%s This hash is not supported.' % bad)
+            print ('%s This hash type is not supported.' % bad)
             quit()
         else:
             return False
@@ -146,7 +157,7 @@ def single(args):
     if result:
         print (result)
     else:
-        print ('%s Sorry this hash isn\'t present in our database.' % bad)
+        print ('%s Hash was not found in any database.' % bad)
 
 if directory:
     try:
