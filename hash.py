@@ -1,145 +1,179 @@
 #!/usr/bin/env python3
+
+import re
+import os
 import requests
 import argparse
-import os
-from re import search, findall
+import concurrent.futures
+
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', help='hashed string', dest='hash')
-parser.add_argument('-f', help='file containing hashes', dest='path')
+parser.add_argument('-s', help='hash', dest='hash')
+parser.add_argument('-f', help='file containing hashes', dest='file')
 parser.add_argument('-d', help='directory containing hashes', dest='dir')
+parser.add_argument('-t', help='number of threads', dest='threads', type=int)
 args = parser.parse_args()
 
 #Colors and shit like that
-white = '\033[97m'
-green = '\033[92m'
-red = '\033[91m'
-yellow = '\033[93m'
 end = '\033[0m'
+red = '\033[91m'
+green = '\033[92m'
+white = '\033[97m'
+dgreen = '\033[32m'
+yellow = '\033[93m'
 back = '\033[7;91m'
-info = '\033[33m[!]\033[0m'
-que = '\033[34m[?]\033[0m'
-bad = '\033[31m[-]\033[0m'
-good = '\033[32m[+]\033[0m'
 run = '\033[97m[~]\033[0m'
+que = '\033[94m[?]\033[0m'
+bad = '\033[91m[-]\033[0m'
+info = '\033[93m[!]\033[0m'
+good = '\033[92m[+]\033[0m'
 
-def alpha(hashvalue):
+cwd = os.getcwd()
+directory = args.dir
+file = args.file
+thread_count = args.threads or 4
+
+if directory:
+    if directory[-1] == '/':
+        directory = directory[:-1]
+
+def alpha(hashvalue, hashtype):
     response = requests.get('https://lea.kz/api/hash/' + hashvalue).text
-    match = search(r': "(.*?)"', response)
+    match = re.search(r': "(.*?)"', response)
     if match:
         return match.group(1)
-    else:
-        if len(hashvalue) == 32:
-            return beta(hashvalue)
-        elif len(hashvalue) == 40:
-            return delta(hashvalue)
-        elif len(hashvalue) == 64:
-            return theta(hashvalue)
-        else:
-            return False
-
-def beta(hashvalue):
-    data = {'md5' : hashvalue, 'x' : '21', 'y' : '8'}
-    response = requests.post('http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php', data).text
-    match = search(r'<span class=\'middle_title\'>Hashed string</span>: [^<]*</div>', response)    
-    if match:
-        return match.group(1)
-    else:
-        gamma(hashvalue)
-
-def gamma(hashvalue):
-    response = requests.get('http://www.nitrxgen.net/md5db/' + hashvalue).text
-    if len(response) > 0:
-        return response
     else:
         return False
 
+def beta(hashvalue, hashtype):
+    response = requests.get('http://hashtoolkit.com/reverse-hash/?hash=', hashvalue).text
+    match = re.search(r'/generate-hash/?text=.*?"', response)
+    if match:
+        return match.group(1)
+    else:
+        return False
 
-def delta(hashvalue):
+def delta(hashvalue, hashtype):
     data = {'auth':'8272hgt', 'hash':hashvalue, 'string':'','Submit':'Submit'}
     response = requests.post('http://hashcrack.com/index.php' , data).text
-    match = search(r'<span class=hervorheb2>(.*?)</span></div></TD>', response)
+    match = re.search(r'<span class=hervorheb2>(.*?)</span></div></TD>', response)
     if match:
         return match.group(1)
     else:
         return False
 
-def omega(hashvalue):
-    data = {'hash':hashvalue, 'decrypt':'Decrypt'}
-    response = requests.post('http://md5decrypt.net/en/Sha256/', data=data).text
-    match = search (r'<b>(.*?)</b><br/><br/>', response)
-    if match:
-        return match.group(1)
-    else:
-        return False
-
-def theta(hashvalue):
-    response = requests.get('http://md5decrypt.net/Api/api.php?hash=%s&hash_type=sha256&email=deanna_abshire@proxymail.eu&code=1152464b80a61728' % hashvalue).text
+def theta(hashvalue, hashtype):
+    response = requests.get('http://md5decrypt.net/Api/api.php?hash=%s&hash_type=%s&email=deanna_abshire@proxymail.eu&code=1152464b80a61728' % (hashvalue, hashtype)).text
     if len(response) != 0:
         return response
     else:
         return False
 
-print ('''\033[1;97m_  _ ____ ____ _  _    ___  _  _ ____ ___ ____ ____ 
-|__| |__| [__  |__|    |__] |  | [__   |  |___ |__/ 
-|  | |  | ___] |  |    |__] |__| ___]  |  |___ |  \  %sv2.0\033[0m\n''' % red)
+print ('''\033[1;97m_  _ ____ ____ _  _    ___  _  _ ____ ___ ____ ____
+|__| |__| [__  |__|    |__] |  | [__   |  |___ |__/
+|  | |  | ___] |  |    |__] |__| ___]  |  |___ |  \  %sv3.0\033[0m\n''' % red)
+
+md5 = [alpha, beta, theta, delta]
+sha1 = [alpha, beta, theta, delta]
+sha256 = [alpha, beta, theta]
+sha384 = [alpha, beta, theta]
+sha512 = [alpha, beta, theta]
 
 def crack(hashvalue):
+    result = False
     if len(hashvalue) == 32:
-        if not args.path:
+        if not file:
             print ('%s Hash function : MD5' % info)
-        result = alpha(hashvalue)
-        if result:
-            return result
-        else:
-            return False
+        for api in md5:
+            r = api(hashvalue, 'md5')
+            if r:
+                return r
     elif len(hashvalue) == 40:
-        if not args.path:
+        if not file:
             print ('%s Hash function : SHA1' % info)
-        result = alpha(hashvalue)
-        if result:
-            return result
-        else:
-            return False
+        for api in sha1:
+            r = api(hashvalue, 'sha1')
+            if r:
+                return r
     elif len(hashvalue) == 64:
-        if not args.path:
+        if not file:
             print ('%s Hash function : SHA-256' % info)
-        result = alpha(hashvalue)
-        if result:
-            return result
+        for api in sha256:
+            r = api(hashvalue, 'sha256')
+            if r:
+                return r
+    elif len(hashvalue) == 96:
+        if not file:
+            print ('%s Hash function : SHA-384' % info)
+        for api in sha384:
+            r = api(hashvalue, 'sha384')
+            if r:
+                return r
+    elif len(hashvalue) == 128:
+        if not file:
+            print ('%s Hash function : SHA-512' % info)
+        for api in sha512:
+            r = api(hashvalue, 'sha512')
+            if r:
+                return r
+    else:
+        if not file:
+            print ('%s This hash type is not supported.' % bad)
+            quit()
         else:
             return False
-    else:
-        print ('%s This hash is not supported.' % bad)
-        quit()
 
-if args.dir:
-    os.system('grep -Pr "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" %s --exclude=\*.{png,jpg,jpeg,mp3,mp4,zip,gz} | grep -Po "[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" >> /root/Hash-Buster/%s.txt' % (args.dir, args.dir.split('/')[-1]))
-    print ('%s Results saved in /root/Hash-Buster/%s.txt' % (info, args.dir.split('/')[-1]))
+result = {}
 
-elif args.path:
+def threaded(hashvalue):
+    resp = crack(hashvalue)
+    if resp:
+        result[hashvalue] = resp
+
+def grepper(directory):
+    os.system('''grep -Pr "[a-f0-9]{128}|[a-f0-9]{96}|[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" %s --exclude=\*.{png,jpg,jpeg,mp3,mp4,zip,gz} |
+        grep -Po "[a-f0-9]{128}|[a-f0-9]{96}|[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}" >> %s/%s.txt''' % (directory, cwd, directory.split('/')[-1]))
+    print ('%s Results saved in %s.txt' % (info, directory.split('/')[-1]))
+
+def miner(file):
     lines = []
-    matches = set()
-    result = {}
-    with open(args.path, 'r') as f:
+    found = set()
+    with open(file, 'r') as f:
         for line in f:
             lines.append(line.strip('\n'))
     for line in lines:
-        match = findall(r'[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}', line)
-        if match:
-            for h in match:
-                matches.add(h)
-    print ('%s Hashes found: %i' % (info, len(matches)))
-    for hashvalue in matches:
-        resp = crack(hashvalue)
-        if resp:
-            result[hashvalue] = resp
-    with open('/root/Hash-Buster/cracked-%s' % args.path.split('/')[-1], 'w+') as f:
-        for hashvalue, cracked in result.items():
-            f.write(hashvalue + ':' + cracked + '\n')
-    print ('%s Results saved in /root/Hash-Buster/%s' % (info, args.path.split('/')[-1]))
-elif args.hash:
+        matches = re.findall(r'[a-f0-9]{128}|[a-f0-9]{96}|[a-f0-9]{64}|[a-f0-9]{40}|[a-f0-9]{32}', line)
+        if matches:
+            for match in matches:
+                found.add(match)
+    print ('%s Hashes found: %i' % (info, len(found)))
+    threadpool = concurrent.futures.ThreadPoolExecutor(max_workers=thread_count)
+    futures = (threadpool.submit(threaded, hashvalue) for hashvalue in found)
+    for i, _ in enumerate(concurrent.futures.as_completed(futures)):
+        if i + 1 == len(found) or (i + 1) % thread_count == 0:
+            print('%s Progress: %i/%i' % (info, i + 1, len(found)), end='\r')
+
+def single(args):
     result = crack(args.hash)
     if result:
         print (result)
     else:
-        print ('%s Sorry this hash isn\'t present in our database.')
+        print ('%s Hash was not found in any database.' % bad)
+
+if directory:
+    try:
+        grepper(directory)
+    except KeyboardInterrupt:
+        pass
+
+elif file:
+    try:
+        miner(file)
+    except KeyboardInterrupt:
+        pass
+    with open('cracked-%s' % file.split('/')[-1], 'w+') as f:
+        for hashvalue, cracked in result.items():
+            f.write(hashvalue + ':' + cracked + '\n')
+    print ('%s Results saved in cracked-%s' % (info, file.split('/')[-1]))
+
+elif args.hash:
+    single(args)
