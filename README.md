@@ -18,7 +18,7 @@
   </a>
 </p>
 
-![demo](https://image.ibb.co/nNtFMe/Screenshot_2018_09_20_13_06_26.png)
+![demo](https://image.ibb.co/fnXWBe/Screenshot_2018_09_20_14_02_05.png)
 
 ## Features
 - Automatic hash type identification
@@ -62,4 +62,4 @@ Multi-threading can incredibly minimize the overall speed when you have a lot of
 `buster -f /root/hashes.txt -t 10`
 
 ### License
-Hash-Buster is licensed under MIT License.
+Hash-Buster is licensed under [MIT License](https://github.com/s0md3v/Hash-Buster/blob/master/LICENSE).
