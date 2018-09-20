@@ -1,7 +1,24 @@
-# Hash-Buster
-Hash Buster is a program which uses several APIs to perform hash lookups.
 
-![banner](https://image.ibb.co/nGNvso/Screenshot_from_2018_06_04_20_18_00.png)
+<h1 align="center">
+  <br>
+  <a href="https://github.com/s0md3v/Hash-Buster"><img src="https://image.ibb.co/bSwkMe/bitmap.png" alt="Hash Buster"></a>
+  <br>
+  Hash Buster
+  <br>
+</h1>
+
+<h4 align="center">Why crack hashes when you can bust them?</h4>
+
+<p align="center">
+  <a href="https://github.com/s0md3v/Hash-Buster/releases">
+    <img src="https://img.shields.io/github/release/s0md3v/Hash-Buster.svg">
+  </a>
+  <a href="https://github.com/s0md3v/Hash-Buster/issues?q=is%3Aissue+is%3Aclosed">
+      <img src="https://img.shields.io/github/issues-closed-raw/s0md3v/Hash-Buster.svg">
+  </a>
+</p>
+
+![demo](https://image.ibb.co/fnXWBe/Screenshot_2018_09_20_14_02_05.png)
 
 ## Features
 - Automatic hash type identification
@@ -45,4 +62,4 @@ Multi-threading can incredibly minimize the overall speed when you have a lot of
 `buster -f /root/hashes.txt -t 10`
 
 ### License
-Hash-Buster is licensed under MIT License.
+Hash-Buster is licensed under [MIT License](https://github.com/s0md3v/Hash-Buster/blob/master/LICENSE).
