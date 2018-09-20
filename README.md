@@ -28,9 +28,9 @@
 - Multi-threading
 
 ## Insallation & Usage
-Hash-Buster can be run directly from the python script but I highly suggest you to install it with the following command:
+> **Note:** Hash Buster isn't compatible with python2, run it with python3 instead.
 
-`make install`
+Hash-Buster can be run directly from the python script but I highly suggest you to install it with `make install`
 
 After the installation, you will be able to access it with `buster` command.
 
