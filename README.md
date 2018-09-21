@@ -29,6 +29,7 @@
 
 ## Insallation & Usage
 > **Note:** Hash Buster isn't compatible with python2, run it with python3 instead.
+> Also, Hash-Buster uses some APIs for hash lookups, check the source code if you are paranoid.
 
 Hash-Buster can be run directly from the python script but I highly suggest you to install it with `make install`
 
