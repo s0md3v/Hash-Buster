@@ -52,6 +52,13 @@ def beta(hashvalue, hashtype):
     else:
         return False
 
+def gamma(hashvalue, hashtype):
+    response = requests.get('http://www.nitrxgen.net/md5db/' + hashvalue).text
+    if response:
+        return response
+    else:
+        return False
+
 def delta(hashvalue, hashtype):
     data = {'auth':'8272hgt', 'hash':hashvalue, 'string':'','Submit':'Submit'}
     response = requests.post('http://hashcrack.com/index.php' , data).text
@@ -72,7 +79,7 @@ print ('''\033[1;97m_  _ ____ ____ _  _    ___  _  _ ____ ___ ____ ____
 |__| |__| [__  |__|    |__] |  | [__   |  |___ |__/
 |  | |  | ___] |  |    |__] |__| ___]  |  |___ |  \  %sv3.0\033[0m\n''' % red)
 
-md5 = [alpha, beta, theta, delta]
+md5 = [gamma, alpha, beta, theta, delta]
 sha1 = [alpha, beta, theta, delta]
 sha256 = [alpha, beta, theta]
 sha384 = [alpha, beta, theta]
