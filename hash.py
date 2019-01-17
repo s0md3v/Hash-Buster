@@ -60,13 +60,13 @@ def gamma(hashvalue, hashtype):
         return False
 
 def delta(hashvalue, hashtype):
-    data = {'auth':'8272hgt', 'hash':hashvalue, 'string':'','Submit':'Submit'}
-    response = requests.post('http://hashcrack.com/index.php' , data).text
-    match = re.search(r'<span class=hervorheb2>(.*?)</span></div></TD>', response)
-    if match:
-        return match.group(1)
-    else:
-        return False
+    #data = {'auth':'8272hgt', 'hash':hashvalue, 'string':'','Submit':'Submit'}
+    #response = requests.post('http://hashcrack.com/index.php' , data).text
+    #match = re.search(r'<span class=hervorheb2>(.*?)</span></div></TD>', response)
+    #if match:
+    #    return match.group(1)
+    #else:
+    return False
 
 def theta(hashvalue, hashtype):
     response = requests.get('http://md5decrypt.net/Api/api.php?hash=%s&hash_type=%s&email=deanna_abshire@proxymail.eu&code=1152464b80a61728' % (hashvalue, hashtype)).text
