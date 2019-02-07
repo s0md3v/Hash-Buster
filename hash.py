@@ -37,12 +37,7 @@ if directory:
         directory = directory[:-1]
 
 def alpha(hashvalue, hashtype):
-    response = requests.get('https://lea.kz/api/hash/' + hashvalue).text
-    match = re.search(r': "(.*?)"', response)
-    if match:
-        return match.group(1)
-    else:
-        return False
+    return False
 
 def beta(hashvalue, hashtype):
     response = requests.get('http://hashtoolkit.com/reverse-hash/?hash=', hashvalue).text
