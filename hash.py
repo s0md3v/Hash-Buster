@@ -40,7 +40,7 @@ def alpha(hashvalue, hashtype):
     return False
 
 def beta(hashvalue, hashtype):
-    response = requests.get('http://hashtoolkit.com/reverse-hash/?hash=', hashvalue).text
+    response = requests.get('https://hashtoolkit.com/reverse-hash/?hash=', hashvalue).text
     match = re.search(r'/generate-hash/?text=.*?"', response)
     if match:
         return match.group(1)
@@ -48,7 +48,7 @@ def beta(hashvalue, hashtype):
         return False
 
 def gamma(hashvalue, hashtype):
-    response = requests.get('http://www.nitrxgen.net/md5db/' + hashvalue).text
+    response = requests.get('https://www.nitrxgen.net/md5db/' + hashvalue).text
     if response:
         return response
     else:
@@ -64,7 +64,7 @@ def delta(hashvalue, hashtype):
     return False
 
 def theta(hashvalue, hashtype):
-    response = requests.get('http://md5decrypt.net/Api/api.php?hash=%s&hash_type=%s&email=deanna_abshire@proxymail.eu&code=1152464b80a61728' % (hashvalue, hashtype)).text
+    response = requests.get('https://md5decrypt.net/Api/api.php?hash=%s&hash_type=%s&email=deanna_abshire@proxymail.eu&code=1152464b80a61728' % (hashvalue, hashtype)).text
     if len(response) != 0:
         return response
     else:
