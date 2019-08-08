@@ -40,7 +40,7 @@ def alpha(hashvalue, hashtype):
     return False
 
 def beta(hashvalue, hashtype):
-    response = requests.get('https://hashtoolkit.com/reverse-hash/?hash=', hashvalue).text
+    response = requests.get('https://hashtoolkit.com/reverse-hash/?hash=' + hashvalue).text
     match = re.search(r'/generate-hash/?text=.*?"', response)
     if match:
         return match.group(1)
