@@ -48,7 +48,7 @@ def beta(hashvalue, hashtype):
         return False
 
 def gamma(hashvalue, hashtype):
-    response = requests.get('https://www.nitrxgen.net/md5db/' + hashvalue).text
+    response = requests.get('https://www.nitrxgen.net/md5db/' + hashvalue, verify=False).text
     if response:
         return response
     else:
