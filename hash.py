@@ -5,6 +5,11 @@ import os
 import requests
 import argparse
 import concurrent.futures
+import json
+from urllib.parse import quote
+from requests.exceptions import RequestException
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', help='hash', dest='hash')
@@ -31,54 +36,135 @@ cwd = os.getcwd()
 directory = args.dir
 file = args.file
 thread_count = args.threads or 4
+header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"}
+retries = 2
+timeout = 20
 
 if directory:
     if directory[-1] == '/':
         directory = directory[:-1]
 
 def alpha(hashvalue, hashtype):
-    return False
+    url = u"http://md5.tellyou.top/MD5Service.asmx/HelloMd5"
+    retries_count = 0
+    while True:
+        try:
+            params = {u"Ciphertext": hashvalue}
+            headers = dict(header, **{u"X-Forwarded-For": u"192.168.1.1"})
+            req = requests.get(url, params=params, headers=headers, timeout=timeout)
+            result = re.findall(r'<string xmlns="http://tempuri.org/">(.*?)</string>', req.text)
+            if result:
+                return result[0]
+            else:
+                return False
+        except RequestException:
+            retries_count += 1
+            if retries_count >= retries:
+                return False
+        except:
+            return False
 
 def beta(hashvalue, hashtype):
-    response = requests.get('https://hashtoolkit.com/reverse-hash/?hash=' + hashvalue).text
-    match = re.search(r'/generate-hash/?text=.*?"', response)
-    if match:
-        return match.group(1)
-    else:
-        return False
+    url = u"https://www.chamd5.org/"
+    retries_count = 0
+    while True:
+        try:
+            s = requests.Session()
+            headers = dict(header, **{u"Content-Type": u"application/json", u"Referer": url,
+                                              u"X-Requested-With": u"XMLHttpRequest"})
+            data = {u"email": u"jxtepz93152@chacuo.net", u"pass": u"!Z3jFqDKy8r6v4", u"type": u"login"}
+            s.post(u"{0}HttpProxyAccess.aspx/ajax_login".format(url), headers=headers, data=json.dumps(data),
+                   timeout=timeout, verify=False)
+
+            data = {u"hash": hashvalue, u"type": hashtype}
+            req = s.post(u"{0}HttpProxyAccess.aspx/ajax_me1ody".format(url), headers=headers, data=json.dumps(data),
+                         timeout=timeout, verify=False)
+            rsp = req.json()
+            msg = re.sub(r"<.+?>", u"", json.loads(rsp[u"d"])[u"msg"])
+            if msg.find(u"\u7834\u89e3\u6210\u529f") > 0:
+                plain = re.findall(r"\u660e\u6587:(.+?)\u6570\u636e\u6765\u6e90", msg)[0].strip()
+                return plain
+            elif msg.find(u"\u91d1\u5e01\u4e0d\u8db3") >= 0:
+                return msg
+            else:
+                return False
+        except RequestException:
+            retries_count += 1
+            if retries_count >= retries:
+                return False
+        except:
+            return False
 
 def gamma(hashvalue, hashtype):
-    response = requests.get('https://www.nitrxgen.net/md5db/' + hashvalue, verify=False).text
-    if response:
-        return response
-    else:
-        return False
+    url = u"https://md5.gromweb.com/"
+    retries_count = 0
+    while True:
+        try:
+            params = {u"md5": hashvalue}
+            req = requests.get(url, headers=header, params=params, timeout=timeout, verify=False)
+            rsp = req.text
+            if rsp.find(u"succesfully reversed") > 0:
+                plain = re.findall(r'<em class="long-content string">(.*?)</em>', rsp)[0]
+                return plain
+            else:
+                return False
+            break
+        except RequestException:
+            retries_count += 1
+            if retries_count >= retries:
+                return False
+        except:
+            return False
 
 def delta(hashvalue, hashtype):
-    #data = {'auth':'8272hgt', 'hash':hashvalue, 'string':'','Submit':'Submit'}
-    #response = requests.post('http://hashcrack.com/index.php' , data).text
-    #match = re.search(r'<span class=hervorheb2>(.*?)</span></div></TD>', response)
-    #if match:
-    #    return match.group(1)
-    #else:
-    return False
+    url = u"http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php"
+    retries_count = 0
+    while True:
+        try:
+            data = {u"md5": hashvalue}
+            req = requests.post(url, headers=header, data=data, timeout=timeout)
+            result = re.findall(r"Hashed string</span>:\s(.+?)</div>", req.text)
+            if result:
+                return result[0]
+            else:
+                return False
+        except RequestException:
+            retries_count += 1
+            if retries_count >= retries:
+                return False
+                # break
 
 def theta(hashvalue, hashtype):
-    response = requests.get('https://md5decrypt.net/Api/api.php?hash=%s&hash_type=%s&email=deanna_abshire@proxymail.eu&code=1152464b80a61728' % (hashvalue, hashtype)).text
-    if len(response) != 0:
-        return response
-    else:
-        return False
+    url = u"https://hashtoolkit.com/reverse-hash/"
+    retries_count = 0
+    while True:
+        try:
+            params = {u"hash": hashvalue}
+            req = requests.get(url, headers=header, params=params, timeout=timeout, verify=False)
+            rsp = req.text
+            if rsp.find(u"No hashes found for") > 0:
+                return False
+            else:
+                plain = re.findall(r'<a href="/generate-hash/\?text=(.*?)"', rsp, re.S)[0]
+                return quote(plain)
+        except RequestException:
+            retries_count += 1
+            if retries_count >= retries:
+                return False
+                # break
+        except:
+            return False
+            # break
 
 print ('''\033[1;97m_  _ ____ ____ _  _    ___  _  _ ____ ___ ____ ____
 |__| |__| [__  |__|    |__] |  | [__   |  |___ |__/
 |  | |  | ___] |  |    |__] |__| ___]  |  |___ |  \  %sv3.0\033[0m\n''' % red)
 
-md5 = [gamma, alpha, beta, theta, delta]
-sha1 = [alpha, beta, theta, delta]
-sha256 = [alpha, beta, theta]
-sha384 = [alpha, beta, theta]
-sha512 = [alpha, beta, theta]
+md5 = [gamma, alpha, beta, delta]#theta, delta]
+sha1 = [beta, theta]
+sha256 = [beta, theta]
+sha384 = [beta, theta]
+sha512 = [beta, theta]
 
 def crack(hashvalue):
     result = False
@@ -158,7 +244,7 @@ def miner(file):
 def single(args):
     result = crack(args.hash)
     if result:
-        print (result)
+        print (f"Hash found: %s{result}." % good)
     else:
         print ('%s Hash was not found in any database.' % bad)
 
