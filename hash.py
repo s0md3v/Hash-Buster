@@ -5,6 +5,7 @@ import os
 import requests
 import argparse
 import concurrent.futures
+import urllib3
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', help='hash', dest='hash')
@@ -31,6 +32,7 @@ cwd = os.getcwd()
 directory = args.dir
 file = args.file
 thread_count = args.threads or 4
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 if directory:
     if directory[-1] == '/':
