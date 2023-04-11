@@ -6,6 +6,10 @@ import requests
 import argparse
 import concurrent.futures
 
+from urllib3.exceptions import InsecureRequestWarning
+from urllib3 import disable_warnings
+disable_warnings(InsecureRequestWarning)
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', help='hash', dest='hash')
 parser.add_argument('-f', help='file containing hashes', dest='file')
