@@ -63,6 +63,7 @@ def alpha(hashvalue, hashtype):
     if match:
         return match.group(1)
     return False
+
 def send_message(ws, message):
     pattern = r'"value\\":\\([^,]+)'
     global found, hashv
@@ -72,14 +73,11 @@ def send_message(ws, message):
     match1 =  re.search(pattern,response)
 
     if match1:
-        
         x = match1.end()-2
-        
         found =1
         hashv = response[148:x]
         return response[148:x]
         
-
 def beta(hashvalue, hashtype):
     url = "wss://md5hashing.net/sockjs/697/etstxji0/websocket"
     ws = websocket.create_connection(url)
